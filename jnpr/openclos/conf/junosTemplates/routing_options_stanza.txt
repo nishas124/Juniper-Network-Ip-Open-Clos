@@ -1,0 +1,11 @@
+replace:
+routing-options {
+{% if gateway and oobNetworks|length %}    static {
+{% for oobNetwork in oobNetworks %}        route {{oobNetwork}} next-hop {{gateway}};
+{% endfor %}    }{% endif %}
+    router-id {{routerId}};
+    autonomous-system {{asn}};
+    forwarding-table {
+        export PFE-LB;
+    }
+}

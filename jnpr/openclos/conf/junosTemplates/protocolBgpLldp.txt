@@ -1,0 +1,36 @@
+protocols {
+    replace:
+    bgp {
+        log-updown;
+        import bgp-clos-in;
+        export bgp-clos-out;
+        graceful-restart;
+        group CLOS {
+            type external;
+            mtu-discovery;
+            bfd-livenes	s-detection {
+                minimum-interval 350;
+                multiplier 3;
+                session-mode single-hop;
+            }
+            multipath multiple-as;
+            neighbor 192.169.0.1 {
+                peer-as 400;
+            }
+	    neighbor 192.169.0.3 {
+                peer-as 401;
+            }
+	    neighbor 192.169.0.5 {
+                peer-as 402;
+            }
+            neighbor 192.169.0.7 {
+                peer-as 403;
+            }
+                    
+        }
+    }
+    replace:
+    lldp {
+        interface all;
+    }
+}

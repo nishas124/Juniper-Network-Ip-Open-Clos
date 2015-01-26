@@ -1,0 +1,47 @@
+replace:
+policy-options {
+    policy-statement PFE-LB {
+        then {
+            load-balance per-packet;
+        }
+    }
+    policy-statement bgp-clos-in {
+        term loopbacks {
+            from {
+                route-filter 10.11.0.0/24 orlonger;
+            }
+            then accept;
+        }
+        term server-L3-gw {
+            from {
+                route-filter 172.32.0.0/12 orlonger;
+            }
+            then accept;
+        }
+        term reject {
+            then reject;
+        }
+    }
+    policy-statement bgp-clos-out {
+        term loopback {
+            from {
+                protocol direct;
+                route-filter 10.11.0.0/24 orlonger;
+            }
+            then {
+                next-hop self;
+                accept;
+            }
+        }
+        term server-L3-gw {
+            from {
+                protocol direct;
+                route-filter 172.32.0.0/12 orlonger;
+            }
+            then {
+                next-hop self;
+                accept;
+            }
+        }
+    }
+}
